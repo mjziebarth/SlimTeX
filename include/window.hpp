@@ -23,6 +23,7 @@
 #define SLIMTEX_WINDOW_H
 
 #include <gtkmm/window.h>
+#include <gtkmm/scrolledwindow.h>
 #include <gtkmm/paned.h>
 
 // GtkSourceView wrapper is extra:
@@ -31,13 +32,16 @@
 // Custom wrapper for evince-view:
 #include <evinceview.hpp>
 
+#include <memory>
+#include <styling.hpp>
+
 // BEGIN NAMESPACE
 namespace Slimtex {
 
 class Window : public Gtk::Window
 {
 	public:
-		Window();
+		Window(std::shared_ptr<const Slimtex::Styling> styling);
 		~Window();
 	
 	private:
@@ -47,7 +51,15 @@ class Window : public Gtk::Window
 		// Child widgets:
 		Gtk::HPaned pane;
 		Gsv::View codeview;
+		Gtk::ScrolledWindow codewindow;
+		Gtk::ScrolledWindow pdfwindow;
 		EvinceView pdfview;
+		
+		// Styling information:
+		std::shared_ptr<const Slimtex::Styling> styling;
+		
+		
+		void parse_styling();
 
 
 };

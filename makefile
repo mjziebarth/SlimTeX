@@ -9,8 +9,13 @@ IDIR=include
 
 CC=g++
 CFLAGS=-Iinclude $(shell pkg-config gtkmm-3.0 --cflags) \
-       $(shell pkg-config gtksourceviewmm-3.0 --cflags)
-LIBS=-lm $(shell pkg-config gtkmm-3.0 --libs) $(shell pkg-config gtksourceviewmm-3.0 --libs)
+       $(shell pkg-config gtksourceviewmm-3.0 --cflags) \
+       $(shell pkg-config evince-view-3.0 --cflags) \
+       $(shell pkg-config libxml-2.0 --cflags)
+LIBS=-lm $(shell pkg-config gtkmm-3.0 --libs) \
+     $(shell pkg-config gtksourceviewmm-3.0 --libs) \
+     $(shell pkg-config evince-view-3.0 --libs) \
+     $(shell pkg-config libxml-2.0 --libs)
 
 #_DEPS=
 #DEPS=$(patsubstr %,$(ODIR)/%,$(_DEPS))
@@ -20,19 +25,20 @@ DEPS=
 src = $(wildcard src/*.cpp)
 obj = $(subst .cpp,.o,$(subst src,build,$(src)))
 
+default: slimtex
+
 # Pattern to compile source files from src to object files
 # in build:
 build/%.o: src/%.cpp include/%.hpp $(DEPS)
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -std=c++17 -c -g -o $@ $<
 
 build/slimtex.o: src/slimtex.cpp $(DEPS)
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -std=c++17 -c -g -o $@ $<
 
-default: slimtex
 
 
 slimtex: $(obj)
-	$(CC) $(LIBS) -o slimtex $(obj)
+	$(CC) $(LIBS) -std=c++17 -g -o slimtex $(obj)
 #	echo "TEST"
 #	echo $(CFLAGS)
 #	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style>
+	<window>
+		<min_height type='int' value='500'/>
+		<min_width type='int' value='500'/>
+	</window>
+	<codeview>
+		<font_face type='str' value='Source Code Pro'/>
+		<font_size type='int' value='12'/>
+		<min_height type='int' value='250'/>
+		<min_width type='int' value='250'/>
+	</codeview>
+</style>

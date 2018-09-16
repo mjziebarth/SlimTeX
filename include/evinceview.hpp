@@ -31,7 +31,16 @@ namespace Slimtex{
 class EvinceView : public Gtk::Widget {
 	public:
 		EvinceView();
-
+		
+		~EvinceView();
+		
+		/* Will throw exceptions. */
+		void load(const Glib::RefPtr<Gio::File>& file);
+	
+	
+	private:
+		/* These are handled internally. */
+		void* model;
 };
 
 // END NAMESPACE
