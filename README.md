@@ -1,5 +1,5 @@
 # SlimTeX
-A slim GtK-based LaTeX editor.
+A slim GTK-based LaTeX editor. Uses code base of Evince and gedit.
 
 **THIS IS _VERY MUCH_ WORK IN PROGRESS** 
 
