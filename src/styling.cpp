@@ -61,7 +61,7 @@ static std::string str_tolower(std::string str)
 }
 
 
-static std::any read_attribute(xmlNode* node)
+static any read_attribute(xmlNode* node)
 {
 	xmlAttr* attribute = node->properties;
 	std::string type;
@@ -86,14 +86,14 @@ static std::any read_attribute(xmlNode* node)
 		attribute = attribute->next;
 	}
 	
-	/* Construct std::any: */
+	/* Construct any: */
 	if (type == "int"){
-		return std::any(std::stoi(val));
+		return any(std::stoi(val));
 	}
 	if (type == "bool"){
 		auto val_lower = str_tolower(val);
 		if (val_lower == "true"){
-			return std::any(true);
+			return any(true);
 		} else if (val_lower == "false"){
 		
 		}
@@ -105,12 +105,12 @@ static std::any read_attribute(xmlNode* node)
 		std::cout << "TYPE: " << type << "\n";
 		throw std::runtime_error("Unknown type in XML!");
 	}
-	return std::any(val);
+	return any(val);
 }
 
 
 static void build_style_dict_recursive(xmlNode* node, std::string prefix,
-                           std::unordered_map<std::string,std::any>& style_dict)
+                           std::unordered_map<std::string,any>& style_dict)
 {
 	for (; node; node = node->next){
 		if (node->type != XML_ELEMENT_NODE){
@@ -161,7 +161,7 @@ Styling::Styling(const char* filename)
 	xmlFreeDoc(doc);
 }
 
-std::any Styling::operator[](const std::string& key) const
+any Styling::operator[](const std::string& key) const
 {
 	return style_dict.at(key);
 }

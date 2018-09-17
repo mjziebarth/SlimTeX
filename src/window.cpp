@@ -24,6 +24,15 @@
 #include <string>
 #include <pangomm/fontdescription.h>
 
+// Handle missing of std::any in c++14 and below:
+#if __cplusplus >= 201703L
+	using std::any_cast;
+#else
+	// We use any_cpp14.hpp as a workaround. Nothing
+	// to be done here since everything was declared
+	// in window.hpp.
+#endif
+
 // BEGIN NAMESPACE
 namespace Slimtex {
 
@@ -86,14 +95,14 @@ void Window::parse_styling()
 		throw std::runtime_error("Styling not defined!");
 	}
 	const Styling& style = *styling;
-	std::any val;
+	any val;
 	Gdk::Geometry geometry;
 	Gdk::WindowHints hints;
 	/* Min width: */
 	if ((val = style[STYLE_KEY_WINDOW_MIN_WIDTH]).has_value()){
 		if (val.type() == typeid(int)){
 			hints |= Gdk::HINT_MIN_SIZE;
-			geometry.min_width = std::any_cast<int>(val);
+			geometry.min_width = any_cast<int>(val);
 		}
 	} else {
 		geometry.min_width=0;
@@ -102,7 +111,7 @@ void Window::parse_styling()
 	if ((val = style[STYLE_KEY_WINDOW_MIN_HEIGHT]).has_value()){
 		if (val.type() == typeid(int)){
 			hints |= Gdk::HINT_MIN_SIZE;
-			geometry.min_height = std::any_cast<int>(val);
+			geometry.min_height = any_cast<int>(val);
 		}
 	} else {
 		geometry.min_height=0;
@@ -115,13 +124,13 @@ void Window::parse_styling()
 	if ((val = style[STYLE_KEY_CODEVIEW_FONT_FAMILY]).has_value()){
 		if (val.type() == typeid(std::string)){
 			font_set=true;
-			font.set_family(std::any_cast<std::string>(val));
+			font.set_family(any_cast<std::string>(val));
 		}
 	}
 	if ((val = style[STYLE_KEY_CODEVIEW_FONT_SIZE]).has_value()){
 		if (val.type() == typeid(int)){
 			font_set=true;
-			font.set_size(std::any_cast<int>(val) * PANGO_SCALE);
+			font.set_size(any_cast<int>(val) * PANGO_SCALE);
 		}
 	}
 	if (font_set){
@@ -132,12 +141,12 @@ void Window::parse_styling()
 	int min_width=0, min_height=0;
 	if ((val = style[STYLE_KEY_CODEVIEW_MIN_WIDTH]).has_value()){
 		if (val.type() == typeid(int)){
-			min_width = std::any_cast<int>(val);
+			min_width = any_cast<int>(val);
 		}
 	}
 	if ((val = style[STYLE_KEY_CODEVIEW_MIN_HEIGHT]).has_value()){
 		if (val.type() == typeid(int)){
-			min_height = std::any_cast<int>(val);
+			min_height = any_cast<int>(val);
 		}
 	}
 	this->codeview.set_size_request(min_width, min_height);
@@ -147,13 +156,13 @@ void Window::parse_styling()
 	// Highlight current line:
 	if ((val = style[STYLE_KEY_CODEVIEW_HIGHLIGHT_CURRENT_LINE]).has_value()){
 		if (val.type() == typeid(bool)){
-			this->codeview.set_highlight_current_line(std::any_cast<bool>(val));
+			this->codeview.set_highlight_current_line(any_cast<bool>(val));
 		}
 	}
 	// Show line numbers:
 	if ((val = style[STYLE_KEY_CODEVIEW_SHOW_LINE_NUMBERS]).has_value()){
 		if (val.type() == typeid(bool)){
-			this->codeview.set_show_line_marks(std::any_cast<bool>(val));
+			this->codeview.set_show_line_marks(any_cast<bool>(val));
 		}
 	}
 	

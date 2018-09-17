@@ -3,12 +3,17 @@
 
 
 
-
+# Directories:
 ODIR=build
 IDIR=include
+SRCDIR=src
 
+# Use c++17 as standard. If c++17 is not available (e.g. in linked
+# libraries), pkg-config should default to the required standard.
+# Since pkg-config is called afterwards this overrides.
+STD=c++17
 CC=g++
-CFLAGS=-Iinclude $(shell pkg-config gtkmm-3.0 --cflags) \
+CFLAGS= -std=$(STD) -Iinclude $(shell pkg-config gtkmm-3.0 --cflags) \
        $(shell pkg-config gtksourceviewmm-3.0 --cflags) \
        $(shell pkg-config evince-view-3.0 --cflags) \
        $(shell pkg-config libxml-2.0 --cflags)
@@ -17,12 +22,10 @@ LIBS=-lm $(shell pkg-config gtkmm-3.0 --libs) \
      $(shell pkg-config evince-view-3.0 --libs) \
      $(shell pkg-config libxml-2.0 --libs)
 
-#_DEPS=
-#DEPS=$(patsubstr %,$(ODIR)/%,$(_DEPS))
 DEPS= 
 
 # Everything in .cpp:
-src = $(wildcard src/*.cpp)
+src = $(wildcard $(SRCDIR)/*.cpp)
 obj = $(subst .cpp,.o,$(subst src,build,$(src)))
 
 default: slimtex
@@ -30,18 +33,18 @@ default: slimtex
 # Pattern to compile source files from src to object files
 # in build:
 build/%.o: src/%.cpp include/%.hpp $(DEPS)
-	$(CC) $(CFLAGS) -std=c++17 -c -g -o $@ $<
+	mkdir -p $(ODIR)
+	$(CC) $(CFLAGS) -c -g -o $@ $<
 
 build/slimtex.o: src/slimtex.cpp $(DEPS)
-	$(CC) $(CFLAGS) -std=c++17 -c -g -o $@ $<
+	mkdir -p $(ODIR)
+	$(CC) $(CFLAGS) -c -g -o $@ $<
 
 
 
 slimtex: $(obj)
-	$(CC) $(LIBS) -std=c++17 -g -o slimtex $(obj)
-#	echo "TEST"
-#	echo $(CFLAGS)
-#	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	mkdir -p $(ODIR)
+	$(CC) $(obj) $(LIBS) -g -o slimtex 
 
 .PHONY: clean
 clean:

@@ -28,7 +28,14 @@
 #define STYLING_HPP
 
 #include <unordered_map>
-#include <any>
+
+// Any container:
+#if __cplusplus >= 201703L
+	#include <any>
+	using std::any;
+#else
+	#include <any_cpp14.hpp>
+#endif
 
 namespace Slimtex {
 
@@ -49,10 +56,10 @@ class Styling {
 	public:
 		Styling(const char* filename);
 		
-		std::any operator[](const std::string& key) const;
+		any operator[](const std::string& key) const;
 		
 	private:
-		std::unordered_map<std::string,std::any> style_dict;
+		std::unordered_map<std::string,any> style_dict;
 
 };
 
