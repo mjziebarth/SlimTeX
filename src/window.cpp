@@ -30,6 +30,11 @@ namespace Slimtex {
 Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	: styling(styling)
 {
+	/* Initialize language buffer: */
+	auto language = Gsv::LanguageManager::get_default()->get_language("latex");
+	codebuffer = Gsv::Buffer::create(language);
+	this->codeview.set_buffer(codebuffer);
+
 	// TODO : Quick defaults:
 	set_title("SlimTeX");
 	
@@ -38,11 +43,11 @@ Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	
 	// Add code view:
 	this->codewindow.add(this->codeview);
-	pane.add(this->codewindow);
+	pane.pack1(this->codewindow, true, false);
 	
 	// Add pdf view:
 	this->pdfwindow.add(this->pdfview);
-	pane.add(this->pdfwindow);
+	pane.pack2(this->pdfwindow, true, false);
 	std::cout << "Added pdfview!\n";
 	
 	// Parse settings:
@@ -68,8 +73,6 @@ Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	
 	// Show container:
 	pane.show();
-	
-	
 }
 
 Window::~Window(){
@@ -138,6 +141,21 @@ void Window::parse_styling()
 		}
 	}
 	this->codeview.set_size_request(min_width, min_height);
+	
+	/* Code view options: */
+	
+	// Highlight current line:
+	if ((val = style[STYLE_KEY_CODEVIEW_HIGHLIGHT_CURRENT_LINE]).has_value()){
+		if (val.type() == typeid(bool)){
+			this->codeview.set_highlight_current_line(std::any_cast<bool>(val));
+		}
+	}
+	// Show line numbers:
+	if ((val = style[STYLE_KEY_CODEVIEW_SHOW_LINE_NUMBERS]).has_value()){
+		if (val.type() == typeid(bool)){
+			this->codeview.set_show_line_marks(std::any_cast<bool>(val));
+		}
+	}
 	
 }
 

@@ -40,6 +40,10 @@ const char* STYLE_KEY_CODEVIEW_FONT_FAMILY = "codeview.font_face";
 const char* STYLE_KEY_CODEVIEW_FONT_SIZE = "codeview.font_size";
 const char* STYLE_KEY_CODEVIEW_MIN_WIDTH = "codeview.min_width";
 const char* STYLE_KEY_CODEVIEW_MIN_HEIGHT = "codeview.min_height";
+const char* STYLE_KEY_CODEVIEW_HIGHLIGHT_CURRENT_LINE =
+    "codeview.highlight_current_line";
+const char* STYLE_KEY_CODEVIEW_SHOW_LINE_NUMBERS =
+    "codeview.show_line_numbers";
 
 
 
@@ -47,6 +51,15 @@ const char* STYLE_KEY_CODEVIEW_MIN_HEIGHT = "codeview.min_height";
 
 
 /******************************************************************************/
+
+static std::string str_tolower(std::string str)
+{
+	for (char& c : str){
+		c = std::tolower(c);
+	}
+	return str;
+}
+
 
 static std::any read_attribute(xmlNode* node)
 {
@@ -76,6 +89,17 @@ static std::any read_attribute(xmlNode* node)
 	/* Construct std::any: */
 	if (type == "int"){
 		return std::any(std::stoi(val));
+	}
+	if (type == "bool"){
+		auto val_lower = str_tolower(val);
+		if (val_lower == "true"){
+			return std::any(true);
+		} else if (val_lower == "false"){
+		
+		}
+		std::string err("Could not read boolean field value '" + val 
+		                + "'");
+		throw std::runtime_error(err);
 	}
 	if (type != "str"){
 		std::cout << "TYPE: " << type << "\n";

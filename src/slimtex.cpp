@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
 	
 	// Library initializing:
 	LIBXML_TEST_VERSION
+	Gsv::init();
 	
 	// Load style:
 	std::shared_ptr<const Slimtex::Styling> styling

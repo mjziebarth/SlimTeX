@@ -7,7 +7,10 @@
 	<codeview>
 		<font_face type='str' value='Source Code Pro'/>
 		<font_size type='int' value='12'/>
-		<min_height type='int' value='250'/>
-		<min_width type='int' value='250'/>
+		<!-- TODO: min dimensions do nothing so far! -->
+		<min_height type='int' value='500'/>
+		<min_width type='int' value='500'/>
+		<highlight_current_line type='bool' value='true'/>
+		<show_line_numbers type='bool' value='true'/>
 	</codeview>
 </style>

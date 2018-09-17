@@ -51,6 +51,7 @@ class Window : public Gtk::Window
 		// Child widgets:
 		Gtk::HPaned pane;
 		Gsv::View codeview;
+		Glib::RefPtr<Gsv::Buffer> codebuffer;
 		Gtk::ScrolledWindow codewindow;
 		Gtk::ScrolledWindow pdfwindow;
 		EvinceView pdfview;

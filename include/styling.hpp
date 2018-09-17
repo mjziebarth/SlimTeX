@@ -41,6 +41,8 @@ extern const char* STYLE_KEY_CODEVIEW_FONT_FAMILY;
 extern const char* STYLE_KEY_CODEVIEW_FONT_SIZE;
 extern const char* STYLE_KEY_CODEVIEW_MIN_WIDTH;
 extern const char* STYLE_KEY_CODEVIEW_MIN_HEIGHT;
+extern const char* STYLE_KEY_CODEVIEW_HIGHLIGHT_CURRENT_LINE;
+extern const char* STYLE_KEY_CODEVIEW_SHOW_LINE_NUMBERS;
 
 
 class Styling {
