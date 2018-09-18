@@ -34,6 +34,8 @@ namespace Slimtex {
 // Window properties:
 const char* STYLE_KEY_WINDOW_MIN_WIDTH = "window.min_width";
 const char* STYLE_KEY_WINDOW_MIN_HEIGHT = "window.min_height";
+const char* STYLE_KEY_WINDOW_DEFAULT_SIZE = "window.default_size";
+
 
 // Text editor properties:
 const char* STYLE_KEY_CODEVIEW_FONT_FAMILY = "codeview.font_face";
@@ -163,7 +165,11 @@ Styling::Styling(const char* filename)
 
 any Styling::operator[](const std::string& key) const
 {
-	return style_dict.at(key);
+	if (style_dict.count(key)){
+		return style_dict.at(key);
+	}
+	
+	return any();
 }
 
 

@@ -40,6 +40,11 @@ build/slimtex.o: src/slimtex.cpp $(DEPS)
 	mkdir -p $(ODIR)
 	$(CC) $(CFLAGS) -c -g -o $@ $<
 
+build/window_styling.o: src/window_styling.cpp include/window.hpp $(DEPS)
+	mkdir -p $(ODIR)
+	$(CC) $(CFLAGS) -c -g -o $@ $<
+
+
 
 
 slimtex: $(obj)
