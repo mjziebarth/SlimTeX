@@ -27,15 +27,41 @@ DEPS=
 # Everything in .cpp:
 src = $(wildcard $(SRCDIR)/*.cpp)
 obj = $(subst .cpp,.o,$(subst src,build,$(src)))
+dep = $(subst .o,.cpp.dep,$(obj))
+
+
+
 
 default: slimtex
 
+# Build dependencies:
+build/dependencies: $(dep)
+#	$(shell ./scripts/create_dependencies.sh > /dev/null)
+	touch $@
+	
+
+dependencies:
+	$(shell ./scripts/create_dependencies.sh > /dev/null)
+
+include $(dep)
+
+
+
+# Make new dependencies:
+.PHONY: build/%.cpp.dep
+build/%.cpp.dep:
+	$(shell ./scripts/create_dependencies.sh > /dev/null)
+
+
 # Pattern to compile source files from src to object files
 # in build:
-build/%.o: src/%.cpp include/%.hpp $(DEPS)
+build/%.o: src/%.cpp build/%.cpp.dep $(DEPS)
+	echo "building $@"
+	echo "dependencies: $^"
 	mkdir -p $(ODIR)
 	$(CC) $(CFLAGS) -c -g -o $@ $<
 
+# Some specializations for files without headers:
 build/slimtex.o: src/slimtex.cpp $(DEPS)
 	mkdir -p $(ODIR)
 	$(CC) $(CFLAGS) -c -g -o $@ $<
@@ -47,9 +73,10 @@ build/window_styling.o: src/window_styling.cpp include/window.hpp $(DEPS)
 
 
 
-slimtex: $(obj)
+slimtex: $(obj) build/dependencies
 	mkdir -p $(ODIR)
 	$(CC) $(obj) $(LIBS) -g -o slimtex 
 
 .PHONY: clean
 clean:
+
