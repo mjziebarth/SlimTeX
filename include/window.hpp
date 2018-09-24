@@ -25,6 +25,7 @@
 #include <gtkmm/window.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/paned.h>
+//#include <gtkmm/menubar.h>
 
 // GtkSourceView wrapper is extra:
 #include <gtksourceviewmm.h>
@@ -50,6 +51,7 @@ class Window : public Gtk::Window
 		
 		// Child widgets:
 		Gtk::HPaned pane;
+//		Gtk::MenuBar menubar;
 		Gsv::View codeview;
 		Glib::RefPtr<Gsv::Buffer> codebuffer;
 		Gtk::ScrolledWindow codewindow;
@@ -62,6 +64,7 @@ class Window : public Gtk::Window
 		
 		void parse_styling();
 
+		void setup_menu_bar();
 
 };
 

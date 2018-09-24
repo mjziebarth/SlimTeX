@@ -58,7 +58,6 @@ function obtain_headers_l1 {
 function obtain_headers_l0 {
 	# Iterate over all input parameters (each of which is supposed to
 	# contain a source file):
-#	echo "\$@: $@"
 	for file in "$@"; do
 	#	echo $file
 		echo $(obtain_headers_l1 $file)

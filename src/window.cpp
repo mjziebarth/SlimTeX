@@ -23,6 +23,7 @@
 #include <iostream>
 #include <string>
 #include <pangomm/fontdescription.h>
+#include <gtkmm/menuitem.h>
 
 // Handle missing of std::any in c++14 and below:
 #if __cplusplus >= 201703L
@@ -35,6 +36,12 @@
 
 // BEGIN NAMESPACE
 namespace Slimtex {
+
+void Window::setup_menu_bar(){
+//	menubar.append(Gtk::MenuItem("New"))
+//	menubar.append(Gtk::MenuItem("Open"))
+//	menubar.append(Gtk::MenuItem("Save"))
+}
 
 Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	: styling(styling)
@@ -58,6 +65,11 @@ Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	this->pdfwindow.add(this->pdfview);
 	pane.pack2(this->pdfwindow, true, false);
 	std::cout << "Added pdfview!\n";
+	
+	// Add menu TODO
+	setup_menu_bar();
+	
+	
 	
 	// Parse settings:
 	try {
