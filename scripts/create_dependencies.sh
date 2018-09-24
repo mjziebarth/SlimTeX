@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# parse_header_tree.sh
+# create_dependencies.sh
 # Shell script to generate internal header dependencies for all
 # source files.
 #
@@ -19,7 +19,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+# along with SlimTeX. If not, see <https://www.gnu.org/licenses/>.
 
 for file in `ls src`; do
 	echo "Generating dependencies for $file"
