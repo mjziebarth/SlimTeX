@@ -19,6 +19,9 @@
  * along with SlimTeX. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef TYPES_HPP
+#define TYPES_HPP
+
 namespace Slimtex {
 
 template<typename T>
@@ -32,3 +35,5 @@ struct Size {
 
 
 }
+
+#endif
