@@ -30,6 +30,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/application.h>
 #include <gtkmm/headerbar.h>
+#include <gtkmm/togglebutton.h>
 #include <gtkmm/menubutton.h>
 #include <gtkmm/popover.h>
 #include <gtkmm/listbox.h>
@@ -74,12 +75,13 @@ class Window : public Gtk::ApplicationWindow
 
 		// The menubar:
 		std::shared_ptr<Gtk::HeaderBar> menubar;
-		std::shared_ptr<Gtk::MenuButton> mb_open;
+		Gtk::ToggleButton tb_open;
 		std::shared_ptr<Gtk::MenuButton> mb_main_menu;
 		Glib::RefPtr<Gio::Menu>   main_menu;
 		
 		// The popover menu for opening (gedit-style):
 		Gtk::Popover po_open;
+		Gtk::VBox    vb_open;
 		Gtk::Button  btn_open_further;
 		Gtk::ListBox lb_open_recent;
 		Gtk::SearchBar sb_open;
@@ -87,6 +89,9 @@ class Window : public Gtk::ApplicationWindow
 		void parse_styling();
 
 		void setup_menu_bar();
+		
+		void button_open_toggled();
+		void popover_open_closed();
 
 };
 

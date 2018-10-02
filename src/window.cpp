@@ -49,6 +49,23 @@ void Window::init_application(Glib::RefPtr<Gtk::Application> app)
 	app->set_accel_for_action("slimtex.paste", "<Primary>v");
 }
 
+/* Signal handlers */
+
+void Window::button_open_toggled()
+{
+	/* Toggle popover depending on button state: */
+	if (tb_open.get_active()){
+		po_open.popup();
+	}
+}
+
+void Window::popover_open_closed()
+{
+	/* Untoggle button: */
+	tb_open.set_active(false);
+}
+
+
 void Window::setup_menu_bar(){
 	// Create builder from file:
 	// TODO Is this still used?
@@ -75,24 +92,30 @@ void Window::setup_menu_bar(){
 	// Create open button:
 	// TODO mb_main_menu should be MenuButton!
 	//      and we should set mb_main_menu->set_menu(main_menu);
-	mb_open = std::make_shared<Gtk::MenuButton>();
-	mb_open->set_label(_("Open"));
-	mb_open->show();
+	tb_open.signal_clicked().connect(sigc::mem_fun(*this,
+	                                 &Window::button_open_toggled));
+	tb_open.set_mode();
+	tb_open.show();
+
+	
 	
 	// TODO populate lb_open_recent with elements!
 	lb_open_recent.show();
-	btn_open_further.show();
+	
+	// TODO populate search bar
 	sb_open.show();
 	
+	btn_open_further.show();
+	vb_open.pack_start(lb_open_recent, false, false);
+	vb_open.pack_end(btn_open_further, false, false);
+	vb_open.pack_start(sb_open, true, false);
+	vb_open.show();
+	po_open.add(vb_open);
+	po_open.signal_closed().connect(sigc::mem_fun(*this,
+	                                 &Window::popover_open_closed));
+	//po_open.show();
 	
-	po_open.add(lb_open_recent);
-	po_open.add(btn_open_further);
-	po_open.add(sb_open);
-	po_open.show();
-	po_open.set_relative_to(*mb_open);
-	po_open.popup();
-	
-	menubar->pack_start(*mb_open);
+	menubar->pack_start(tb_open);
 	//mb_open
 
 	// Use the nice Gnome titlebar:
@@ -100,7 +123,10 @@ void Window::setup_menu_bar(){
 }
 
 Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
-	: styling(styling), btn_open_further(_("Further documents ..."))
+	: styling(styling),
+	  btn_open_further(_("Further documents ...")),
+	  tb_open(_("Open")),
+	  po_open(tb_open)
 {
 	/* Initialize language buffer: */
 	auto language = Gsv::LanguageManager::get_default()->get_language("latex");
