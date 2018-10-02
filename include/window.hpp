@@ -32,6 +32,7 @@
 #include <gtkmm/headerbar.h>
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/menubutton.h>
+#include <gtkmm/filechooserdialog.h>
 #include <gtkmm/popover.h>
 #include <gtkmm/listbox.h>
 #include <gtkmm/searchbar.h>
@@ -83,6 +84,7 @@ class Window : public Gtk::ApplicationWindow
 		Gtk::Popover po_open;
 		Gtk::VBox    vb_open;
 		Gtk::Button  btn_open_further;
+		Gtk::FileChooserDialog fcd_open;
 		Gtk::ListBox lb_open_recent;
 		Gtk::SearchBar sb_open;
 		
@@ -91,7 +93,14 @@ class Window : public Gtk::ApplicationWindow
 		void setup_menu_bar();
 		
 		void button_open_toggled();
+		
+		/* Signal that is executed when the popover for 
+		 * the open button is closed: */
 		void popover_open_closed();
+		
+		/* Close the popover for the open button: */
+		void popover_open_close();
+		void button_open_further_clicked();
 
 };
 

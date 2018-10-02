@@ -26,6 +26,7 @@
 #include <gtkmm/menuitem.h>
 #include <config.hpp>
 #include <glib/gi18n.h>
+#include <gtkmm/filefilter.h>
 
 // Handle missing of std::any in c++14 and below:
 #if __cplusplus >= 201703L
@@ -51,6 +52,12 @@ void Window::init_application(Glib::RefPtr<Gtk::Application> app)
 
 /* Signal handlers */
 
+void Window::button_open_further_clicked()
+{
+	/* Show dialog: */
+	fcd_open.show();
+}
+
 void Window::button_open_toggled()
 {
 	/* Toggle popover depending on button state: */
@@ -63,6 +70,12 @@ void Window::popover_open_closed()
 {
 	/* Untoggle button: */
 	tb_open.set_active(false);
+}
+
+void Window::popover_open_close()
+{
+	/* Close: */
+	po_open.popdown();
 }
 
 
@@ -105,7 +118,35 @@ void Window::setup_menu_bar(){
 	// TODO populate search bar
 	sb_open.show();
 	
+	// Init the file chooser button:
+	auto texfile_filter = Gtk::FileFilter::create();
+	// TODO Why doesn't the filter show any effect?
+	texfile_filter->add_mime_type("text/*");
+	texfile_filter->add_pattern("*.tex");
+	texfile_filter->set_name("LaTeX files");
+	fcd_open.set_filter(texfile_filter);
+	
+	/* Whenever the dialog is closed, the open-button popover should
+	 * close as well: */
+	fcd_open.signal_hide().connect(sigc::mem_fun(*this,
+	                                 &Window::popover_open_close));
+	
+//	//btn_open_further.set_filter(texfile_filter);
+
+//	std::cout << "Filters:\n";
+//	std::cout << "main:       \"" << btn_open_further.get_filter()->get_name() << "\"\n";
+//	std::cout << "selectable: ";
+//	for (auto f : btn_open_further.list_filters()){
+//		std::cout << "\"" << f->get_name() << "\" ";
+//	}
+//	std::cout << "\n";
+	
+	
+	
 	btn_open_further.show();
+	btn_open_further.signal_clicked().connect(sigc::mem_fun(*this,
+	                                 &Window::button_open_further_clicked));
+	
 	vb_open.pack_start(lb_open_recent, false, false);
 	vb_open.pack_end(btn_open_further, false, false);
 	vb_open.pack_start(sb_open, true, false);
@@ -113,7 +154,6 @@ void Window::setup_menu_bar(){
 	po_open.add(vb_open);
 	po_open.signal_closed().connect(sigc::mem_fun(*this,
 	                                 &Window::popover_open_closed));
-	//po_open.show();
 	
 	menubar->pack_start(tb_open);
 	//mb_open
@@ -126,6 +166,7 @@ Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	: styling(styling),
 	  btn_open_further(_("Further documents ...")),
 	  tb_open(_("Open")),
+	  fcd_open(*this,_("Open")),
 	  po_open(tb_open)
 {
 	/* Initialize language buffer: */
