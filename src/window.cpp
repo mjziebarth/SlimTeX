@@ -78,6 +78,20 @@ void Window::setup_menu_bar(){
 	mb_open = std::make_shared<Gtk::MenuButton>();
 	mb_open->set_label(_("Open"));
 	mb_open->show();
+	
+	// TODO populate lb_open_recent with elements!
+	lb_open_recent.show();
+	btn_open_further.show();
+	sb_open.show();
+	
+	
+	po_open.add(lb_open_recent);
+	po_open.add(btn_open_further);
+	po_open.add(sb_open);
+	po_open.show();
+	po_open.set_relative_to(*mb_open);
+	po_open.popup();
+	
 	menubar->pack_start(*mb_open);
 	//mb_open
 
@@ -86,7 +100,7 @@ void Window::setup_menu_bar(){
 }
 
 Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
-	: styling(styling)
+	: styling(styling), btn_open_further(_("Further documents ..."))
 {
 	/* Initialize language buffer: */
 	auto language = Gsv::LanguageManager::get_default()->get_language("latex");

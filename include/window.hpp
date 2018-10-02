@@ -33,6 +33,7 @@
 #include <gtkmm/menubutton.h>
 #include <gtkmm/popover.h>
 #include <gtkmm/listbox.h>
+#include <gtkmm/searchbar.h>
 
 // GtkSourceView wrapper is extra:
 #include <gtksourceviewmm.h>
@@ -81,6 +82,7 @@ class Window : public Gtk::ApplicationWindow
 		Gtk::Popover po_open;
 		Gtk::Button  btn_open_further;
 		Gtk::ListBox lb_open_recent;
+		Gtk::SearchBar sb_open;
 		
 		void parse_styling();
 
