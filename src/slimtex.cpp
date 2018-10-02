@@ -29,10 +29,29 @@
 
 #include <styling.hpp>
 
+/* Internationalization:
+ * TODO this does not work yet! */
+#define GETTEXT_PACKAGE "gtk20"
+#define PROGRAMNAME_LOCALEDIR "locale"
+#include <glib/gi18n.h>
+#include <locale.h>
+
+
 int main(int argc, char *argv[])
 {
+	// Initialize locale:
+	// TODO this does not work yet!
+	setlocale(LC_ALL, "");
+	bindtextdomain(GETTEXT_PACKAGE, PROGRAMNAME_LOCALEDIR);
+	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+	textdomain(GETTEXT_PACKAGE);
+
 	auto app = Gtk::Application::create(argc, argv, "org.slimtex.base");
 	
+	// Do some app initialization that needs to be synchronized with
+	// the Window class:
+	Slimtex::Window::init_application(app);
+
 	// Library initializing:
 	LIBXML_TEST_VERSION
 	Gsv::init();

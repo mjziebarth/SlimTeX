@@ -22,10 +22,17 @@
 #ifndef SLIMTEX_WINDOW_H
 #define SLIMTEX_WINDOW_H
 
-#include <gtkmm/window.h>
+// TODO make sure all these headers are actually used!
+#include <gtkmm/applicationwindow.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/paned.h>
-//#include <gtkmm/menubar.h>
+#include <gtkmm/box.h>
+#include <gtkmm/builder.h>
+#include <gtkmm/application.h>
+#include <gtkmm/headerbar.h>
+#include <gtkmm/menubutton.h>
+#include <gtkmm/popover.h>
+#include <gtkmm/listbox.h>
 
 // GtkSourceView wrapper is extra:
 #include <gtksourceviewmm.h>
@@ -39,19 +46,21 @@
 // BEGIN NAMESPACE
 namespace Slimtex {
 
-class Window : public Gtk::Window
+class Window : public Gtk::ApplicationWindow
 {
 	public:
 		Window(std::shared_ptr<const Slimtex::Styling> styling);
 		~Window();
+		
+		static void init_application(Glib::RefPtr<Gtk::Application> app);
 	
 	private:
 		// Signal handlers:
 		// TODO
 		
 		// Child widgets:
+		Gtk::VBox box;
 		Gtk::HPaned pane;
-//		Gtk::MenuBar menubar;
 		Gsv::View codeview;
 		Glib::RefPtr<Gsv::Buffer> codebuffer;
 		Gtk::ScrolledWindow codewindow;
@@ -60,7 +69,18 @@ class Window : public Gtk::Window
 		
 		// Styling information:
 		std::shared_ptr<const Slimtex::Styling> styling;
+		Glib::RefPtr<Gtk::Builder>      menubuilder;
+
+		// The menubar:
+		std::shared_ptr<Gtk::HeaderBar> menubar;
+		std::shared_ptr<Gtk::MenuButton> mb_open;
+		std::shared_ptr<Gtk::MenuButton> mb_main_menu;
+		Glib::RefPtr<Gio::Menu>   main_menu;
 		
+		// The popover menu for opening (gedit-style):
+		Gtk::Popover po_open;
+		Gtk::Button  btn_open_further;
+		Gtk::ListBox lb_open_recent;
 		
 		void parse_styling();
 

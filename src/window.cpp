@@ -24,6 +24,8 @@
 #include <string>
 #include <pangomm/fontdescription.h>
 #include <gtkmm/menuitem.h>
+#include <config.hpp>
+#include <glib/gi18n.h>
 
 // Handle missing of std::any in c++14 and below:
 #if __cplusplus >= 201703L
@@ -37,10 +39,50 @@
 // BEGIN NAMESPACE
 namespace Slimtex {
 
+void Window::init_application(Glib::RefPtr<Gtk::Application> app)
+{
+	/* TODO : Does this even do anything? Check!
+	 *        If it does something, make sure it is complete. */
+	app->set_accel_for_action("slimtex.new", "<Primary>n");
+	app->set_accel_for_action("slimtex.quit", "<Primary>q");
+	app->set_accel_for_action("slimtex.copy", "<Primary>c");
+	app->set_accel_for_action("slimtex.paste", "<Primary>v");
+}
+
 void Window::setup_menu_bar(){
-//	menubar.append(Gtk::MenuItem("New"))
-//	menubar.append(Gtk::MenuItem("Open"))
-//	menubar.append(Gtk::MenuItem("Save"))
+	// Create builder from file:
+	// TODO Is this still used?
+	try {
+		std::string path = std::string(BASE_PATH).append("/ui/menubar.ui");
+		menubuilder = Gtk::Builder::create_from_file(path);
+	} catch (Gio::ResourceError e) {
+		std::cerr << "Error loading ui definition: " << e.what() << "\n"
+		             "Cannot start!\n";
+		exit(-1);
+	} catch (...) {
+		std::cerr << "Error loading ui definition. Cannot start!\n";
+		exit(-1);
+	}
+	
+	// Apply menu builder (?):
+//	Glib::RefPtr<Gio::Menu> menu = 
+//	    Glib::RefPtr<Gio::Menu>::cast_dynamic(menubuilder->get_object("menubar"));
+	menubar = std::make_shared<Gtk::HeaderBar>();
+	menubar->set_title("SlimTeX");
+	menubar->set_show_close_button(true);
+	menubar->show();
+	
+	// Create open button:
+	// TODO mb_main_menu should be MenuButton!
+	//      and we should set mb_main_menu->set_menu(main_menu);
+	mb_open = std::make_shared<Gtk::MenuButton>();
+	mb_open->set_label(_("Open"));
+	mb_open->show();
+	menubar->pack_start(*mb_open);
+	//mb_open
+
+	// Use the nice Gnome titlebar:
+	set_titlebar(*menubar);
 }
 
 Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
@@ -49,27 +91,21 @@ Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	/* Initialize language buffer: */
 	auto language = Gsv::LanguageManager::get_default()->get_language("latex");
 	codebuffer = Gsv::Buffer::create(language);
-	this->codeview.set_buffer(codebuffer);
-
-	// TODO : Quick defaults:
-	set_title("SlimTeX");
+	codeview.set_buffer(codebuffer);
 	
 	// Add the pane:
-	add(this->pane);
+	add(pane);
 	
 	// Add code view:
-	this->codewindow.add(this->codeview);
-	pane.pack1(this->codewindow, true, false);
+	codewindow.add(codeview);
+	pane.pack1(codewindow, true, false);
 	
 	// Add pdf view:
-	this->pdfwindow.add(this->pdfview);
-	pane.pack2(this->pdfwindow, true, false);
-	std::cout << "Added pdfview!\n";
+	pdfwindow.add(pdfview);
+	pane.pack2(pdfwindow, true, false);
 	
-	// Add menu TODO
+	// Add menu
 	setup_menu_bar();
-	
-	
 	
 	// Parse settings:
 	try {
@@ -83,18 +119,17 @@ Window::Window(std::shared_ptr<const Slimtex::Styling> styling)
 	}
 	
 	// Fixed settings:
-	this->codeview.set_wrap_mode(Gtk::WRAP_WORD);
+	codeview.set_wrap_mode(Gtk::WRAP_WORD);
 	
 	
 	// Show:
-	this->codewindow.show();
-	this->codeview.show();
-	this->pdfwindow.show();
-	this->pdfview.show();
-	std::cout << "Showed pdfview!\n";
+	codewindow.show();
+	codeview.show();
+	pdfwindow.show();
+	pdfview.show();
 	
 	std::string path("test_documents/sincos.pdf");
-	this->pdfview.load(Gio::File::create_for_path(path));
+	pdfview.load(Gio::File::create_for_path(path));
 	
 	// Show container:
 	pane.show();
