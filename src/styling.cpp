@@ -35,6 +35,8 @@ namespace Slimtex {
 const char* STYLE_KEY_WINDOW_MIN_WIDTH = "window.min_width";
 const char* STYLE_KEY_WINDOW_MIN_HEIGHT = "window.min_height";
 const char* STYLE_KEY_WINDOW_DEFAULT_SIZE = "window.default_size";
+const char* STYLE_KEY_WINDOW_FOPEN_POPUP_VBOX_SPACING =
+    "window.fopen_popup_vbox_spacing";
 
 
 // Text editor properties:

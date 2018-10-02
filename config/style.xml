@@ -3,6 +3,7 @@
 	<window>
 		<min_height type='int' value='500'/>
 		<min_width type='int' value='1000'/>
+		<fopen_popup_vbox_spacing type='int' value='10'/>
 		<!-- full screen toggling does not work so far. -->
 		<!--<default_size type='str' value='full'/>-->
 	</window>

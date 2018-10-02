@@ -129,7 +129,7 @@ void Window::setup_menu_bar(){
 	/* Whenever the dialog is closed, the open-button popover should
 	 * close as well: */
 	fcd_open.signal_hide().connect(sigc::mem_fun(*this,
-	                                 &Window::popover_open_close));
+	                               &Window::popover_open_close));
 	
 //	//btn_open_further.set_filter(texfile_filter);
 
@@ -156,7 +156,6 @@ void Window::setup_menu_bar(){
 	                                 &Window::popover_open_closed));
 	
 	menubar->pack_start(tb_open);
-	//mb_open
 
 	// Use the nice Gnome titlebar:
 	set_titlebar(*menubar);

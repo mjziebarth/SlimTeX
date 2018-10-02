@@ -44,6 +44,7 @@ extern const char* STYLE_KEY_WINDOW_MIN_WIDTH;
 extern const char* STYLE_KEY_WINDOW_MIN_HEIGHT;
 extern const char* STYLE_KEY_WINDOW_DEFAULT_WIDTH;
 extern const char* STYLE_KEY_WINDOW_DEFAULT_SIZE;
+extern const char* STYLE_KEY_WINDOW_FOPEN_POPUP_VBOX_SPACING;
 
 // Text editor properties:
 extern const char* STYLE_KEY_CODEVIEW_FONT_FAMILY;

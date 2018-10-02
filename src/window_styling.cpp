@@ -95,6 +95,14 @@ void Window::parse_styling()
 	
 	set_geometry_hints(*this,geometry,hints);
 	
+	/* Open dialog stuff: */
+	if ((val = style[STYLE_KEY_WINDOW_FOPEN_POPUP_VBOX_SPACING]).has_value()){
+		if (val.type() == typeid(int)){
+			int spacing(any_cast<int>(val));
+			vb_open.set_spacing(spacing);
+		}
+	}
+	
 	/* Code view font: */
 	Pango::FontDescription font;
 	bool font_set = false;
